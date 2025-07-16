@@ -1,4 +1,4 @@
-import java.util.*
+package com.code
 
 data class Jewelry(val weight: Int, val price: Int) : Comparable<Jewelry>{
     override fun compareTo(other: Jewelry): Int {
@@ -8,38 +8,5 @@ data class Jewelry(val weight: Int, val price: Int) : Comparable<Jewelry>{
 }
 
 fun main() {
-    val br = System.`in`.bufferedReader()
-
-    val (N, K) = br.readLine().split(" ").map { it.toInt() }
-
-    val jewelryPriorityQueue = PriorityQueue<Jewelry>()
-    val bag = Array(K){0}
-
-    repeat(N){
-        val (m, v) = br.readLine().split(" ").map { it.toInt() }
-        jewelryPriorityQueue.add(Jewelry(m, v))
-    }
-
-    repeat(K){
-        bag[it] = br.readLine().toInt() // 무게 낮은거부터 오름차순
-    }
-
-    bag.sort()
-
-    val pricePriorityQueue = PriorityQueue<Int>(Collections.reverseOrder())
-    var totalValue = 0L
-
-    bag.forEach {
-        while(jewelryPriorityQueue.isNotEmpty()){
-            if(jewelryPriorityQueue.peek().weight <= it){
-                pricePriorityQueue.add(jewelryPriorityQueue.poll().price)
-            } else {
-                break;
-            }
-        }
-
-        if(pricePriorityQueue.isNotEmpty()) totalValue += pricePriorityQueue.poll()
-    }
-
-    println(totalValue)
+    println("Hello World!")
 }
