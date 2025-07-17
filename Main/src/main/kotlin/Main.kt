@@ -33,18 +33,24 @@ fun main() {
     while (arr1Pointer <= arrEndpointIndex && arr2Pointer >= 0){
         val sum = arr1[arr1Pointer] + arr2[arr2Pointer]
         if(sum == 0L){
-            var arr1SameNumCount = 0;
-            var arr2SameNumCount = 0;
+            var arr1SameNumCount = 0L;
+            var arr2SameNumCount = 0L;
             var arr1PointerTemp = arr1Pointer
             var arr2PointerTemp = arr2Pointer
 
-            while(arr1PointerTemp <= arrEndpointIndex && arr1[arr1Pointer] == arr1[arr1PointerTemp++]) arr1SameNumCount++
-            while(arr2PointerTemp >= 0 && arr2[arr2Pointer] == arr2[arr2PointerTemp--]) arr2SameNumCount++
+            while(arr1PointerTemp <= arrEndpointIndex && arr1[arr1Pointer] == arr1[arr1PointerTemp]) {
+                arr1SameNumCount++
+                arr1PointerTemp++
+            }
+            while(arr2PointerTemp >= 0 && arr2[arr2Pointer] == arr2[arr2PointerTemp]){
+                arr2SameNumCount++
+                arr2PointerTemp--
+            }
 
             count += arr1SameNumCount * arr2SameNumCount
 
-            arr1Pointer += arr1SameNumCount
-            arr2Pointer += arr2SameNumCount
+            arr1Pointer = arr1PointerTemp
+            arr2Pointer = arr2PointerTemp
         } else if(sum < 0){
             arr1Pointer++
         } else {
