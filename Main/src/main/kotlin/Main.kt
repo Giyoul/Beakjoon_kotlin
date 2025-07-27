@@ -1,62 +1,50 @@
-import java.util.*
 
-fun main() {
+
+fun main(){
     val br = System.`in`.bufferedReader()
-    val n = br.readLine().toInt()
-    val arr = Array<LongArray>(4){ LongArray(n) }
-    var count = 0L
-    val arrEndpointIndex = n*n-1
 
-    repeat(n){ nIter ->
-        val st = StringTokenizer(br.readLine())
-        repeat(4){ fourIter ->
-            arr[fourIter][nIter] = st.nextToken().toLong()
+    var input = br.readLine()!!.split(" ").map { it.toLong() }
+    var p1 = Pair(input[0], input[1])
+    var p2 = Pair(input[2], input[3])
+
+    input = br.readLine()!!.split(" ").map { it.toLong() }
+    var p3 = Pair(input[0], input[1])
+    var p4 = Pair(input[2], input[3])
+
+    val p1p2 = ccw(p1, p2, p3) * ccw(p1, p2, p4)
+    val p3p4 = ccw(p3, p4, p1) * ccw(p3, p4, p2)
+
+    if(p1p2 == 0 && p3p4 == 0) {
+        if(p1LargerThanP2(p1, p2)){
+            var tmp = p1
+            p1 = p2
+            p2 = tmp
         }
-    }
-
-    val arr1 = LongArray(arrEndpointIndex+1)
-    val arr2 = LongArray(arrEndpointIndex+1)
-
-    repeat(n){ i ->
-        repeat(n){ j ->
-            arr1[n*i+j] = arr[0][i] + arr[1][j]
-            arr2[n*i+j] = arr[2][i] + arr[3][j]
+        if(p1LargerThanP2(p3, p4)){
+            var tmp = p3
+            p3 = p4
+            p4 = tmp
         }
+        if (p1LargerThanP2(p2, p3) && p1LargerThanP2(p4, p1)) println(1) else println(0)
+    } else {
+        if(p1p2 <= 0 && p3p4 <= 0) println(1) else println(0)
     }
+}
 
-    arr1.sort()
-    arr2.sort()
-
-    var arr1Pointer = 0
-    var arr2Pointer = arrEndpointIndex
-
-    while (arr1Pointer <= arrEndpointIndex && arr2Pointer >= 0){
-        val sum = arr1[arr1Pointer] + arr2[arr2Pointer]
-        if(sum == 0L){
-            var arr1SameNumCount = 0L;
-            var arr2SameNumCount = 0L;
-            var arr1PointerTemp = arr1Pointer
-            var arr2PointerTemp = arr2Pointer
-
-            while(arr1PointerTemp <= arrEndpointIndex && arr1[arr1Pointer] == arr1[arr1PointerTemp]) {
-                arr1SameNumCount++
-                arr1PointerTemp++
-            }
-            while(arr2PointerTemp >= 0 && arr2[arr2Pointer] == arr2[arr2PointerTemp]){
-                arr2SameNumCount++
-                arr2PointerTemp--
-            }
-
-            count += arr1SameNumCount * arr2SameNumCount
-
-            arr1Pointer = arr1PointerTemp
-            arr2Pointer = arr2PointerTemp
-        } else if(sum < 0){
-            arr1Pointer++
-        } else {
-            arr2Pointer--
-        }
+fun p1LargerThanP2(p1: Pair<Long, Long>, p2: Pair<Long, Long>) : Boolean {
+    if (p1.first == p2.first) {
+        return p1.second >= p2.second
+    } else {
+        return p1.first > p2.first
     }
+}
 
-    println(count)
+fun ccw(p1: Pair<Long, Long>, p2: Pair<Long, Long>, p3: Pair<Long, Long>): Int{
+    val ccw = (p1.first*p2.second + p2.first*p3.second + p3.first*p1.second) - (p2.first*p1.second + p3.first*p2.second + p1.first*p3.second)
+
+    return when{
+        ccw < 0 -> -1
+        ccw > 0 -> 1
+        else -> 0
+    }
 }
