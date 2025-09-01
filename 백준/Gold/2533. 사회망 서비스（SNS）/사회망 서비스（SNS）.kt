@@ -1,11 +1,17 @@
+import java.io.StreamTokenizer
 import kotlin.math.min
 
 lateinit var graph : Array<ArrayList<Int>>
 lateinit var visited : BooleanArray
 lateinit var dp : Array<IntArray>
 
-fun main() = with(System.`in`.bufferedReader()) {
-    val n = readLine()!!.toInt()
+fun main() = with(StreamTokenizer(System.`in`.bufferedReader())) {
+    fun StreamTokenizer.nextInt(): Int{
+        nextToken()
+        return nval.toInt()
+    }
+
+    val n = nextInt()
     graph = Array(n+1) { ArrayList() }
     visited = BooleanArray(n+1)
     // [n][0]은 n번째 노드를 root 노드로 하는데, root 노드는 얼리아답터가 아닌 경우
@@ -13,7 +19,8 @@ fun main() = with(System.`in`.bufferedReader()) {
     dp = Array(n+1) { IntArray(2) { 0 } }
 
     repeat(n-1) {
-        val(from, to) = readLine()!!.split(' ').map { input -> input.toInt() }
+        val from = nextInt()
+        val to = nextInt()
         graph[from].add(to)
         graph[to].add(from)
     }
